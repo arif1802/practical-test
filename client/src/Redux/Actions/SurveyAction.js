@@ -14,7 +14,8 @@ export const fetchForm = (slug) => (dispatch) => {
                 if (res.success) {
                     dispatch(setFetchForm(res.data));
                 } else {
-                    toast.error(res.msg);
+                    toast.error(res.msg)
+                    dispatch(push('/'))
                 }
             });
     } catch (error) {

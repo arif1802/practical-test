@@ -30,7 +30,11 @@ module.exports = {
     },
     async getForm(req, res) {
         const form = await FormBuilder.fetchForm(req.params.slug);
-        res.send({ success: true, data: form })
+        if (form) {
+            res.send({ success: true, data: form })
+        } else {
+            res.send({ success: false, msg: "Please use correct form url" })
+        }
     },
     async saveSurvey(req, res) {
         const body = req.body;
