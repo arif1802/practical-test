@@ -23,7 +23,7 @@ export default function FormBuilder() {
     const answerTypes = useSelector((state) => state.formBuilder.answerTypes);
     const forms = useSelector((state) => state.formBuilder.forms);
     const questions = useSelector((state) => state.formBuilder.questions);
-    
+
     useEffect(() => {
         fetchAnswerTypes();
         getForms();
@@ -34,6 +34,10 @@ export default function FormBuilder() {
     };
 
     const handleSubmitForm = async () => {
+        if (!getValues('formName')) {
+            toast.error("Please add form name");
+            return;
+        }
         if (!questions.length) {
             toast.error("Please add question first");
             return;
