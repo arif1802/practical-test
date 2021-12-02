@@ -1,12 +1,29 @@
 # practical-test
 
+### Versions
+1. React JS: 17.0.2 
+2. Express JS: 4.17.1 
+3. Node Version: 16.5.0
+
 This test has been performed in React(Frontend) and Express/Node(Backend).
+
 There are two folders.
-1. Client (Frontend)
-2. Server (Backend)
 
-After successfully cloning go to above two folders and perform npm install.
+1. client (Frontend)
+2. server (Backend)
 
-Mysql has been used as database. You need to import database which is located in /server/database folder.
+After successfully clone please move to `practical_test` branch.
 
-After successfully done above steps perform npm start in both folders (client and server) and here you go.
+Find client folder and perform `npm install`.
+
+Find server folder and perform `npm install`.
+
+### DataBase
+
+Mysql has been used as database. 
+Create database with name `form_builder`.
+You need to import database which is located in `/server/database` folder.
+
+### Run Project
+Go to client and perform `npm start`.
+Go to server and perform `npm start`.
