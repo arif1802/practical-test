@@ -10,8 +10,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { useDispatch } from "react-redux";
-import { useState } from 'react';
-import { saveForm } from '../../../Redux/Actions/FormBuilderAction';
+import { saveQuestion } from '../../../Redux/Actions/FormBuilderAction';
 
 export default function FormBuilderDialog(props) {
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
@@ -19,18 +18,16 @@ export default function FormBuilderDialog(props) {
 
     const showChoices = watch(`answer_type`);
 
-    const handleClose = (needToResetParentForm = false) => {
+    const handleClose = () => {
         reset();
-        props.handleDialog({ value: false, needToResetParentForm });
+        props.handleDialog({ value: false });
     };
 
     const onSubmit = (data) => {
         const body = { ...data };
-        body.form_name = props.formName;
-        body.slug = props.formName.replace(new RegExp(" ", "g"), "-").toLowerCase();
         body.choices = manageChoices(data.choices);
-        dispatch(saveForm(body))
-        handleClose(true);
+        dispatch(saveQuestion(body))
+        handleClose();
     }
 
     // Function to prepare choices
@@ -49,10 +46,10 @@ export default function FormBuilderDialog(props) {
     return (
         <div>
             <Dialog fullWidth open={props.openDialog ? props.openDialog : false} onClose={handleClose}>
-                <DialogTitle>Form Builder</DialogTitle>
+                <DialogTitle>Add Question</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Please fill below fields to create the form
+                        Please fill below fields to create the question
                     </DialogContentText>
                     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>

@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import FormBuilderDialog from './Components/FormBuilderDialog';
-import { getAnswerTypes, fetchForms } from '../../Redux/Actions/FormBuilderAction'
+import { getAnswerTypes, fetchForms, saveForm } from '../../Redux/Actions/FormBuilderAction'
 import { useDispatch, useSelector } from "react-redux";
 import FormBuilderService from '../../Services/FormBuilderService';
 import { toast } from 'react-toastify';
@@ -22,27 +22,38 @@ export default function FormBuilder() {
     const dispatch = useDispatch();
     const answerTypes = useSelector((state) => state.formBuilder.answerTypes);
     const forms = useSelector((state) => state.formBuilder.forms);
+    const questions = useSelector((state) => state.formBuilder.questions);
 
     useEffect(() => {
         fetchAnswerTypes();
         getForms();
     }, [])
 
-    const onSubmit = async (data) => {
-        const checkIfFormExist = await FormBuilderService.checkFormExist(data);
+    const handleQuestionDialog = () => {
+        setOpenDialog(true);
+    };
+
+    const handleSubmitForm = async () => {
+        if (!questions.length) {
+            toast.error("Please add question first");
+            return;
+        }
+        const checkIfFormExist = await FormBuilderService.checkFormExist({ formName: getValues('formName') });
         if (checkIfFormExist.success) {
-            setOpenDialog(true);
+            const body = {};
+            body.form_name = getValues('formName');
+            body.slug = getValues('formName').replace(new RegExp(" ", "g"), "-").toLowerCase();
+            body.question = questions;
+            reset();
+            await dispatch(saveForm(body))
+            getForms()
         } else {
             toast.error(checkIfFormExist.msg)
         }
-    };
+    }
 
     // Function to handle the dialog open/close
     const handleDialog = (data) => {
-        if (data.needToResetParentForm == true) {
-            getForms();
-            reset();
-        }
         setOpenDialog(data.value)
     }
 
@@ -69,7 +80,7 @@ export default function FormBuilder() {
                     }} component="h1" variant="h5">
                         <strong>Create Form</strong>
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+                    <Box component="form" sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -81,21 +92,38 @@ export default function FormBuilder() {
                                 />
                             </Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Add Question
-                        </Button>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <Button
+                                    type="button"
+                                    onClick={handleSubmit(handleQuestionDialog)}
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Add Question
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button
+                                    type="button"
+                                    onClick={handleSubmitForm}
+                                    fullWidth
+                                    color="success"
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Create Form
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Box>
             </Container>
             <Container>
                 <FormsListTable forms={forms} />
             </Container>
-            <FormBuilderDialog openDialog={openDialog} formName={getValues('formName')} answerTypes={answerTypes} handleDialog={handleDialog} />
+            <FormBuilderDialog openDialog={openDialog} answerTypes={answerTypes} handleDialog={handleDialog} />
         </ThemeProvider>
     );
 }

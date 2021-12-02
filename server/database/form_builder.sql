@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2021 at 03:54 PM
+-- Generation Time: Dec 02, 2021 at 10:58 AM
 -- Server version: 5.7.36-0ubuntu0.18.04.1
 -- PHP Version: 7.0.33-55+ubuntu18.04.1+deb.sury.org+1
 
@@ -46,19 +46,33 @@ INSERT INTO `answer_types` (`id`, `name`, `status`, `createdAt`, `updatedAt`) VA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `form_builders`
+-- Table structure for table `forms`
 --
 
-CREATE TABLE `form_builders` (
+CREATE TABLE `forms` (
   `id` int(11) NOT NULL,
   `form_name` varchar(255) DEFAULT NULL,
   `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '1',
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `questions`
+--
+
+CREATE TABLE `questions` (
+  `id` int(11) NOT NULL,
+  `form_id` int(11) DEFAULT NULL,
+  `question` varchar(255) DEFAULT NULL,
+  `answer_type` int(11) DEFAULT NULL,
   `choices` varchar(255) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
   `createdAt` datetime DEFAULT NULL,
-  `updatedAt` datetime DEFAULT NULL,
-  `answer_type` int(11) DEFAULT NULL,
-  `question` varchar(255) DEFAULT NULL
+  `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -69,8 +83,8 @@ CREATE TABLE `form_builders` (
 
 CREATE TABLE `surveys` (
   `id` int(11) NOT NULL,
-  `form_builder_id` int(11) DEFAULT NULL,
-  `answer` varchar(255) DEFAULT NULL,
+  `form_id` int(11) DEFAULT NULL,
+  `survey_feedback` varchar(255) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL
@@ -87,17 +101,24 @@ ALTER TABLE `answer_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `form_builders`
+-- Indexes for table `forms`
 --
-ALTER TABLE `form_builders`
+ALTER TABLE `forms`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `questions`
+--
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `form_id` (`form_id`);
 
 --
 -- Indexes for table `surveys`
 --
 ALTER TABLE `surveys`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `form_builder_id` (`form_builder_id`);
+  ADD KEY `form_id` (`form_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -109,9 +130,14 @@ ALTER TABLE `surveys`
 ALTER TABLE `answer_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `form_builders`
+-- AUTO_INCREMENT for table `forms`
 --
-ALTER TABLE `form_builders`
+ALTER TABLE `forms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `questions`
+--
+ALTER TABLE `questions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `surveys`
@@ -123,10 +149,16 @@ ALTER TABLE `surveys`
 --
 
 --
+-- Constraints for table `questions`
+--
+ALTER TABLE `questions`
+  ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`form_id`) REFERENCES `forms` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
 -- Constraints for table `surveys`
 --
 ALTER TABLE `surveys`
-  ADD CONSTRAINT `surveys_ibfk_1` FOREIGN KEY (`form_builder_id`) REFERENCES `form_builders` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `surveys_ibfk_1` FOREIGN KEY (`form_id`) REFERENCES `forms` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

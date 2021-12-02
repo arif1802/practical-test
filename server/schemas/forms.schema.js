@@ -1,9 +1,6 @@
-const formBuilder = db.define('form_builder', {
+const forms = db.define('forms', {
     form_name: Sequelize.STRING,
-    question: Sequelize.STRING,
     slug: Sequelize.STRING,
-    answer_type: Sequelize.INTEGER,
-    choices: Sequelize.STRING,
     status: {
         type: Sequelize.BOOLEAN,
         defaultValue: 1
@@ -22,9 +19,9 @@ const formBuilder = db.define('form_builder', {
     }
 })
 
-formBuilder.sync({
+forms.sync({
     logging: false,
-    alter: false
+    alter: true
 });
 
-module.exports = formBuilder;
+module.exports = forms;

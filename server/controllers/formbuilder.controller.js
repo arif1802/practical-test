@@ -9,9 +9,17 @@ module.exports = {
         }
     },
     async saveForm(req, res) {
-        const formSaved = await FormBuilder.saveForm(req.body);
-        if (formSaved) {
-            res.send({ success: true, data: [formSaved], msg: "Form Saved successfully" })
+        const form = await FormBuilder.saveForm(req.body);
+        if (form) {
+            const questions = await req.body.question.forEach(element => {
+                if (element.question) {
+                    const body = element;
+                    body.form_id = form.id;
+                    FormBuilder.saveQuestion(body);
+                }
+            });
+
+            res.send({ success: true, msg: "Form Saved successfully" })
         } else {
             res.send({ success: false, msg: "Something went wrong" })
         }
@@ -38,7 +46,7 @@ module.exports = {
     },
     async saveSurvey(req, res) {
         const body = req.body;
-        body.answer = Array.isArray(req.body.answer) ? req.body.answer.join(',') : req.body.answer;
+        body.survey_feedback = JSON.stringify(req.body.survey_feedback);
         const survey = await FormBuilder.saveSurvey(req.body);
         if (survey) {
             res.send({ success: true, msg: "You have successfully submitted survey" })

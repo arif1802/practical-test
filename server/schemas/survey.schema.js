@@ -1,6 +1,11 @@
 const survey = db.define('survey', {
-    form_builder_id: Sequelize.INTEGER,
-    answer: Sequelize.STRING,
+    form_id: Sequelize.INTEGER,
+    survey_feedback: {
+        type: Sequelize.STRING,
+        get() {
+            return this.getDataValue('survey_feedback') ? JSON.parse(this.getDataValue('survey_feedback')) : "";
+        }
+    },
     status: {
         type: Sequelize.BOOLEAN,
         defaultValue: 1
@@ -19,18 +24,18 @@ const survey = db.define('survey', {
     }
 })
 
-const FormBuilder = require('./formbuilder.schema');
-survey.belongsTo(FormBuilder, {
-    foreignKey: 'form_builder_id',
+const form = require('./forms.schema');
+survey.belongsTo(form, {
+    foreignKey: 'form_id',
 });
 
-FormBuilder.hasMany(survey, {
-    foreignKey: 'form_builder_id',
+form.hasMany(survey, {
+    foreignKey: 'form_id',
 });
 
 survey.sync({
     logging: false,
-    alter: false
+    alter: true
 });
 
 module.exports = survey;

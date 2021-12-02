@@ -1,7 +1,8 @@
-import { GET_ANSWER_TYPES, GET_FORMS, GET_FORM } from '../Constants/ApiConstants'
+import { GET_ANSWER_TYPES, GET_FORMS, GET_FORM, SAVE_QUESTION } from '../Constants/ApiConstants'
 const intialState = {
     answerTypes: [],
     forms: [],
+    questions: [],
     surveyForm: {}
 }
 export default function ApiReducer(state = intialState, action) {
@@ -12,6 +13,8 @@ export default function ApiReducer(state = intialState, action) {
             return { ...state, forms: action.payload };
         case GET_FORM:
             return { ...state, surveyForm: action.payload };
+        case SAVE_QUESTION:
+            return { ...state, questions: [...state.questions, action.payload] };
         default:
             return state;
     }
