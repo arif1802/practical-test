@@ -89,9 +89,17 @@ export default function FormBuilder() {
                                     helperText={errors.formName ? "Please enter form name" : ""}
                                     {...register("formName", { required: true })}
                                 />
+                                {questions.length ?
+                                    <Typography sx={{
+                                        mt: 1
+                                    }} component="h3" variant="h6">
+                                        {`${questions.length} question added to ${getValues('formName')}`}
+                                    </Typography> : ""
+                                }
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
+
                             <Grid item xs={6}>
                                 <Button
                                     type="button"
