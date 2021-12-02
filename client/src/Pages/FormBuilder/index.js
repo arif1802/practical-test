@@ -45,8 +45,7 @@ export default function FormBuilder() {
             body.slug = getValues('formName').replace(new RegExp(" ", "g"), "-").toLowerCase();
             body.question = questions;
             reset();
-            await dispatch(saveForm(body))
-            getForms()
+            dispatch(saveForm(body))
         } else {
             toast.error(checkIfFormExist.msg)
         }

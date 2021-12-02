@@ -50,6 +50,7 @@ export const saveForm = (data) => (dispatch) => {
             .then((res) => {
                 if (res.success) {
                     toast.success(res.msg)
+                    dispatch(fetchForms())
                 } else {
                     toast.error(res.msg);
                 }
