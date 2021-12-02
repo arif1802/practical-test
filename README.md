@@ -18,7 +18,7 @@ Find client folder and perform `npm install`.
 
 Find server folder and perform `npm install`.
 
-### DataBase
+### Database
 
 Mysql has been used as database. 
 Create database with name `form_builder`.
