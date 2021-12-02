@@ -23,7 +23,11 @@ Find server folder and perform `npm install`.
 Mysql has been used as database. 
 Create database with name `form_builder`.
 You need to import database which is located in `/server/database` folder.
+You need to change the database credentials in `/server/.env` file.
 
 ### Run Project
 Go to client and perform `npm start`.
 Go to server and perform `npm start`.
+
+React will be run on 3000 port and node will be run on 7000 port.
+If you want to change the port for node change `PORT` in `/server/env` file and you need to make change in `REACT_APP_BASEURL` param which is located at `client/.env`
