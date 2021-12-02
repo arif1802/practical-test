@@ -63,6 +63,7 @@ export const saveForm = (data) => (dispatch) => {
 export const saveQuestion = (data) => (dispatch) => {
     try {
         dispatch(setSaveQuestion(data))
+        toast.success('Question added. You need to click `Create Form` button to create the form');
     } catch (error) {
         console.log(error.message);
     }
