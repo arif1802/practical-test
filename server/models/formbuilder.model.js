@@ -28,7 +28,10 @@ module.exports = {
             where: { status: 1 },
             include: [{
                 model: Survey
-            }]
+            }],
+            order: [
+                ['id', 'DESC'],
+            ],
         })
     },
     async fetchForm(slug) {

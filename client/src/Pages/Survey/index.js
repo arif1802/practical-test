@@ -27,6 +27,7 @@ export default function Survey(props) {
     }, [])
 
     const onSubmit = (data) => {
+        console.log(data)
         data.form_id = surveyForm.id;
         const surveyFeedback = [];
         data.surveyForm.forEach((item, index) => {
@@ -47,7 +48,7 @@ export default function Survey(props) {
     const navigateToHome = () => {
         props.history.push('/')
     }
-
+    console.log(errors)
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="lg">
@@ -107,11 +108,9 @@ export default function Survey(props) {
                                             <RadioGroup
                                                 aria-label="gender"
                                                 name="radio-buttons-group"
-                                                key={element.id}
-                                                {...register(`surveyForm.${index}.answer`, { required: true })}
                                             >
-                                                <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                                                <FormControlLabel value="no" control={<Radio />} label="No" />
+                                                <FormControlLabel {...register(`surveyForm.${index}.answer`, { required: true })} value="yes" control={<Radio />} label="Yes" />
+                                                <FormControlLabel {...register(`surveyForm.${index}.answer`, { required: true })} value="no" control={<Radio />} label="No" />
                                             </RadioGroup>
                                             <FormHelperText error={errors?.surveyForm && errors.surveyForm[index]?.answer ? true : false}>{errors?.surveyForm && errors.surveyForm[index]?.answer ? "Please select option" : ""}</FormHelperText>
                                         </FormControl>
