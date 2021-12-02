@@ -21,7 +21,7 @@ const forms = db.define('forms', {
 
 forms.sync({
     logging: false,
-    alter: true
+    alter: false
 });
 
 module.exports = forms;

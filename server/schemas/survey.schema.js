@@ -35,7 +35,7 @@ form.hasMany(survey, {
 
 survey.sync({
     logging: false,
-    alter: true
+    alter: false
 });
 
 module.exports = survey;

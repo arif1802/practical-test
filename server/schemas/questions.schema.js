@@ -32,7 +32,7 @@ form.hasMany(question, {
 
 question.sync({
     logging: false,
-    alter: true
+    alter: false
 });
 
 module.exports = question;
