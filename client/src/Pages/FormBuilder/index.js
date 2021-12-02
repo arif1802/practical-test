@@ -23,7 +23,7 @@ export default function FormBuilder() {
     const answerTypes = useSelector((state) => state.formBuilder.answerTypes);
     const forms = useSelector((state) => state.formBuilder.forms);
     const questions = useSelector((state) => state.formBuilder.questions);
-
+    
     useEffect(() => {
         fetchAnswerTypes();
         getForms();
